@@ -57,6 +57,11 @@ export default function StyleAdvisorPage() {
       return;
     }
 
+    // Prevent concurrent requests
+    if (isLoading) {
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     setResult(null);
@@ -65,6 +70,7 @@ export default function StyleAdvisorPage() {
       if (!previewUrl) {
         throw new Error("File could not be read.");
       }
+
       const response = await fetch("/api/style-advisor", {
         method: "POST",
         headers: {
@@ -73,9 +79,24 @@ export default function StyleAdvisorPage() {
         body: JSON.stringify({ photoDataUri: previewUrl }),
       });
 
+      // Clone response to safely read body multiple times if needed
+      const responseClone = response.clone();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to analyze photo");
+        let errorMessage = "Failed to analyze photo";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If JSON parsing fails, try to get text
+          try {
+            const errorText = await responseClone.text();
+            errorMessage = errorText || errorMessage;
+          } catch {
+            // Use default message if all parsing fails
+          }
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();

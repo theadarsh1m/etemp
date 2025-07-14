@@ -117,9 +117,23 @@ Please respond in this exact JSON format:
       );
     }
 
+    // Clean the response by removing markdown code blocks
+    let cleanedResponse = aiResponse.trim();
+
+    // Remove ```json and ``` if present
+    if (cleanedResponse.startsWith("```json")) {
+      cleanedResponse = cleanedResponse
+        .replace(/^```json\s*/, "")
+        .replace(/\s*```$/, "");
+    } else if (cleanedResponse.startsWith("```")) {
+      cleanedResponse = cleanedResponse
+        .replace(/^```\s*/, "")
+        .replace(/\s*```$/, "");
+    }
+
     // Try to parse the JSON response
     try {
-      const parsed = JSON.parse(aiResponse);
+      const parsed = JSON.parse(cleanedResponse);
       return NextResponse.json(parsed);
     } catch (parseError) {
       // If JSON parsing fails, return a fallback response
