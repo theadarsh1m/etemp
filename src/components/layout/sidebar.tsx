@@ -19,6 +19,7 @@ import {
   LayoutGrid,
   Settings,
   Wand2,
+  Crown,
 } from "lucide-react";
 
 const navItems = [
@@ -27,6 +28,7 @@ const navItems = [
   { href: "/chat", label: "AI Chat", icon: Bot },
   { href: "/recommendations", label: "Recommendations", icon: Sparkles },
   { href: "/style-advisor", label: "Style Advisor", icon: Wand2 },
+  { href: "/smart-stylist", label: "Smart Stylist", icon: Crown },
   { href: "/admin", label: "Admin Panel", icon: Shield },
 ];
 
@@ -36,7 +38,7 @@ export function AppSidebar() {
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="hidden">
-         <h2 className="font-bold text-2xl text-white">RetailGeniusAI</h2>
+        <h2 className="font-bold text-2xl text-white">RetailGeniusAI</h2>
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
@@ -59,10 +61,10 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-             <SidebarMenuButton tooltip="Settings">
-                <Settings />
-                <span>Settings</span>
-             </SidebarMenuButton>
+            <SidebarMenuButton tooltip="Settings">
+              <Settings />
+              <span>Settings</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
